@@ -19,7 +19,7 @@
   - [ ] RSS / ATOM
     - WIP
   - [ ] Email
-    - Pending `MX` Record
+    - Use custom domain
 - [ ] Image compression
   > Use [Pillow](https://github.com/python-pillow/Pillow)
   - Next Stage
