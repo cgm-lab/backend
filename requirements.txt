@@ -1,0 +1,3 @@
+--pre django  # to use 3.1b will change when 3.2 is released
+django-gsheets
+feedgen
