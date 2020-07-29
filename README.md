@@ -11,15 +11,23 @@
 - [x] Google sheet DB sync
   > Use [django-gsheet](https://github.com/MeanPug/django-gsheets)
 - [ ] Notification
+
   > Use [django-schedule](https://github.com/thauber/django-schedule)
+
   - [x] LINE
   - [x] Telegram
   - [ ] Messenger
     - Need support
+
+- [ ] Subscription
+
+  - [ ] Email
+    - [x] Use `cgm.im`
   - [ ] RSS / ATOM
     - WIP
-  - [ ] Email
-    - Use custom domain
+  - [ ] LINE, Telegram, etc...
+    - Next Stage
+
 - [ ] Image compression
   > Use [Pillow](https://github.com/python-pillow/Pillow)
   - Next Stage

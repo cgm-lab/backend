@@ -16,6 +16,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
+SETTINGS_DATA = load(open(BASE_DIR / "cgm" / "fixtures" / "settings.json"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -139,14 +140,14 @@ GSHEETS_DB = {
 #     "tokens": ["..."]
 #   }
 # }
-PUSH_ENV = load(open(BASE_DIR / "cgm" / "fixtures" / "push_env.json"))
+PUSH_ENV = load(open(BASE_DIR / "cgm" / "fixtures" / "notification.json"))
 
-# E-Mail TODO: Next Stage MX Record
+# E-Mail
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.yourserver.com'
-# EMAIL_PORT = '<your-server-port>'
-# EMAIL_HOST_USER = 'your@djangoapp.com'
-# EMAIL_HOST_PASSWORD = 'your-email account-password'
-# EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "mail.gandi.net"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "no-reply@cgm.im"
+EMAIL_HOST_PASSWORD = SETTINGS_DATA["EMAIL_HOST_PASSWORD"]
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

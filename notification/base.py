@@ -1,4 +1,5 @@
 import requests
+from django.core.mail import send_mail
 
 from cgm.settings import PUSH_ENV
 
@@ -19,6 +20,17 @@ class Notification:
         res = requests.post(
             f"https://api.telegram.org/bot{kwargs['id']}/sendMessage",
             data={"chat_id": token, "text": text},
+        )
+
+    @staticmethod
+    def send_mail(text, token, *args, **kwargs):
+        # TODO: Next stage
+        success = send_mail(
+            "CGM Lab Notification",
+            text,
+            "CGM Lab <no-reply@cgm.im>",
+            ["b10509017@gapps.ntust.edu.tw"],
+            fail_silently=False,
         )
 
     @staticmethod
