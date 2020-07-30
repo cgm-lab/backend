@@ -1,7 +1,7 @@
 import requests
 from django.core.mail import send_mail
 
-from cgm.settings import PUSH_ENV
+from cgm.settings import SECRETS
 
 
 class Notification:
@@ -47,7 +47,7 @@ class Notification:
     @classmethod
     def broadcast(cls, text):
         # TODO: reload PUSH_ENV
-        for platform, params in PUSH_ENV.items():  # str, dict
+        for platform, params in SECRETS["notification"].items():  # str, dict
             send = getattr(cls, f"send_{platform}")
             # traverse tokens
             tokens = params.pop("tokens")

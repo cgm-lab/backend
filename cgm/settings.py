@@ -12,17 +12,33 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 from json import load
 from pathlib import Path
+from os import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-SETTINGS_DATA = load(open(BASE_DIR / "cgm" / "fixtures" / "settings.json"))
+data_dir_key = "CGM_DATA_DIR"
+DATA_DIR = (
+    Path(environ[data_dir_key])
+    if data_dir_key in environ
+    else BASE_DIR / "cgm" / "conf" / "secrets.json"
+)
+
+try:
+    with DATA_DIR.joinpath("conf", "secrets.json").open() as handle:
+        SECRETS = load(handle)
+except IOError:
+    SECRETS = {
+        "secret_key": "a",
+        "email_host_password": "",
+        "notification": {"line": {}, "telegram": {}},
+    }
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "mt(t=pah-plzu(j1+p$ked82)2&b(_t@s_rm$-sktb3ex7vjg="
+SECRET_KEY = SECRETS["secret_key"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -121,26 +137,12 @@ STATIC_URL = "/static/"
 
 # Google Sheets
 
-GSHEETS = {"CLIENT_SECRETS": BASE_DIR / "cgm" / "fixtures" / "credentials_cgm.json"}
+GSHEETS = {"CLIENT_SECRETS": BASE_DIR / "cgm" / "conf" / "credentials_cgm.json"}
 
 GSHEETS_DB = {
     "Main": "1pLiKTVYZhSpOl-yEwIILqGb5RHMpsu9MRHJgJmZgI0E",
     "Album": "1lHeWiOYO26k57ll3GeklI4WCButbA6xBALw0V6HJzro",
 }
-
-# Notification
-
-# Format
-# {
-#   "line": {
-#     "tokens": ["..."]
-#   },
-#   "telegram": {
-#     "id": "...",
-#     "tokens": ["..."]
-#   }
-# }
-PUSH_ENV = load(open(BASE_DIR / "cgm" / "fixtures" / "notification.json"))
 
 # E-Mail
 
@@ -148,6 +150,6 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "mail.gandi.net"
 EMAIL_PORT = "587"
 EMAIL_HOST_USER = "no-reply@cgm.im"
-EMAIL_HOST_PASSWORD = SETTINGS_DATA["EMAIL_HOST_PASSWORD"]
+EMAIL_HOST_PASSWORD = SECRETS["email_host_password"]
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
